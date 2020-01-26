@@ -3,3 +3,4 @@ screen
 package-lock.json
 user-data
 .idea
+sendgrid.env

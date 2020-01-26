@@ -172,7 +172,7 @@ module.exports = class SkyscannerScraper {
                 console.log(`Adding ${adults} adults`);
                 for (var i = 0; i < adults - 1; i++) {
                     await this.page.click(this.config.selectors.passengerOptions.adultButton); // default 1
-                };
+                }
             }
     
             if (children > 0) {
