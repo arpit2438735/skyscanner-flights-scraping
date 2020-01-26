@@ -32,7 +32,7 @@ module.exports = class FlightList {
 				results.push(tempObj);
 			}
 
-			return JSON.stringify(results);
+			return results;
 		}, elements);
     }
 

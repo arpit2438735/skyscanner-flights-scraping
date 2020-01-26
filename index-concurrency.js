@@ -83,7 +83,7 @@ app.get('/', async function (req, res) {
 		}
 
 		await scraperInstance.checkAndOpenSearchbar();
-		// await scraperInstance.page.screenshot({ path: 'screen/test.png' });
+		await scraperInstance.page.screenshot({ path: 'screen/test.png' });
 
 		console.log(chalk.yellow("Is oneWay: " + chalk.underline.bold(args['oneWay'])));
 		if (args['oneWay'] === true)
@@ -106,7 +106,7 @@ app.get('/', async function (req, res) {
 			args['yearStart']
 		);
 
-		// await scraperInstance.page.screenshot({ path: 'screen/test-1.png' });
+		await scraperInstance.page.screenshot({ path: 'screen/test-1.png' });
 
 		if (args['oneWay'] !== true) {
 			await scraperInstance.setReturnDate(

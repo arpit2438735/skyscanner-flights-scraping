@@ -4,17 +4,17 @@ const utils = require('./utils/utils');
 const Browser = require('./browser/browser');
 const SkyscannerScraper = require('./skyscanner/skyscanner');
 
-const args = utils.getInputParameters();
-
-if (Object.keys(args).indexOf('h') !== -1) {
-	utils.showHelp();
-	return false;
-}
-
-utils.validateInputArguments(args);
-
-(async () => {
+async function callFlight(arguments) {
 	try{
+		const args = utils.getInputParameters(arguments);
+
+		if (Object.keys(args).indexOf('h') !== -1) {
+			utils.showHelp();
+			return false;
+		}
+
+		utils.validateInputArguments(args);
+
 		const browser = new Browser(args);
 		await browser.init();
 
@@ -77,13 +77,18 @@ utils.validateInputArguments(args);
 
 		if(await skyscannerScraperInstance.loadResultPage()) {
 			console.log(await skyscannerScraperInstance.page.url());
-			// await skyscannerScraperInstance.page.screenshot({ path: 'screen/submitted.png' });
+			await skyscannerScraperInstance.page.screenshot({ path: 'screen/submitted.png' });
 
 			console.log('Wait for the results..');
 
 			var pageParser = await skyscannerScraperInstance.createPageParser();
+
+			if(!pageParser && !pageParser.getData) {
+				await skyscannerScraperInstance.page.reload(await skyscannerScraperInstance.page.url());
+				pageParser = await skyscannerScraperInstance.createPageParser();
+			}
 			var results = await pageParser.getData(skyscannerScraperInstance);
-			console.log(results);
+			return results;
 		}
 
 		console.log('Window close');
@@ -92,4 +97,6 @@ utils.validateInputArguments(args);
 		console.error('Something went wrong');
 		console.log(e);
 	}
-})();
+}
+
+module.exports = callFlight;

@@ -13,7 +13,7 @@ module.exports = class SkyscannerScraper {
                 flightList: '.day-list-item'
             },
             selectors: selectors,
-            enableScreenshot: false
+            enableScreenshot: true
         };
     }
 

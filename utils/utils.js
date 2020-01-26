@@ -1,8 +1,8 @@
 const chalk = require('chalk');
 
 module.exports = {
-	getInputParameters: function() {
-		const args = {
+	getInputParameters: function(arguments) {
+		let args = {
 			ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36',
 			directOnly: true,
 			destination: 'Everywhere',
@@ -17,6 +17,10 @@ module.exports = {
 					args[splitted[0].replace('--', '')] = splitted[1];
 			}
 		);
+
+		if(arguments) {
+			args = { ...args, ...arguments};
+		}
 
 		if (args['monthEnd'] !== undefined) {
 			args['oneWay'] = false;
@@ -48,14 +52,10 @@ module.exports = {
 		`);
 	},
 	validateInputArguments: function (args) {
+		console.log(args);
 		let valid = true;
 		if (args['origin'] === undefined) {
 			console.log(chalk.bgRed("Please select an airport of departure with --origin, eg. --origin=FLR.\n\n"));
-			valid = false;
-		}
-
-		if (args['monthStart'] === undefined) {
-			console.log(chalk.bgRed('The month need to be a number. Please select a month with --monthStart, eg. --monthStart=06.\n\n'));
 			valid = false;
 		}
 
@@ -124,9 +124,9 @@ module.exports = {
 	setDatepicker: async function (page, wholeMonth, day, month, year) {
 		if (wholeMonth !== false) {
 			await page.click('[class*="FlightDatepicker"] li:nth-of-type(2) button');
-			let monthNumberSelector = (parseInt(month) + 1) - new Date().getMonth();
-			await page.click('button[class*="Monthselector_monthselector__month"]:nth-of-type(' + monthNumberSelector + ')');
-			console.log(chalk.blue(`Selected the ${month} month`));
+			await page.click('button[class*="Monthselector_monthselector__wholeyear"]');
+			console.log(`Selected the ${wholeMonth} month`);
+			console.log(chalk.blue(`Selected the ${wholeMonth} month`));
 		} else {
 			var year = year || new Date().getFullYear();
 			var month = month.toString().padStart(2, '0') || new Date().getMonth().toString().padStart(2, '0');

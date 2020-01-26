@@ -36,11 +36,12 @@ module.exports = {
     },
     destinationList: {
         dataContainer: '.browse-list-category',
-        record: '.browse-list-result',
+        record: '.browse-data-route',
         title: 'h3',
         direct: '.browse-data-directness',
         url: '.flightLink',
         parentDataContainer: '.result-list ul',
-        dataContainerOpened: '.browse-list-category.open'
+        dataContainerOpened: '.browse-list-category.open',
+        price: '.route-price'
     }
 };

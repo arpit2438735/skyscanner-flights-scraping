@@ -10,38 +10,32 @@ module.exports = class DestinationList {
 
     async getData(scraperInstance) {
         const config = {
-            maxDestination: 20,
+            maxDestination: 500,
             maxDestinationLevel: 15
         };
-        var dataElements = await scraperInstance.page.$$(elements.dataContainer);
+
+        await scraperInstance.page.$$(elements.dataContainer);
         console.log('Getting details from list...');
 
-        var results = [];
-        for (let e in dataElements) {
-            if (e >= config.maxDestination) break;
-            await dataElements[e].click();
-            await scraperInstance.page.waitForSelector(elements.record);
-            var elementResult = await scraperInstance.page.evaluate((selectors, config) => {
-                var results = [];
-                var resultList = document.querySelectorAll(selectors.record);
+        const results = await scraperInstance.page.evaluate((selectors) => {
+            const resultList = document.querySelectorAll(selectors.record);
+            const data = [];
 
-                for (let i = 0; i < resultList.length; i++) {
-                    if (i >= config.maxDestinationLevel) break;
-                    results.push({
+            if(resultList.length) {
+                for(let i=1; i< resultList.length; i++) {
+                    console.log(resultList[i]);
+                    data.push({
                         destination: resultList[i].querySelector(selectors.title).innerText,
-                        direct: resultList[i].querySelector(selectors.direct).innerText,
-                        price: resultList[i].querySelector(selectors.url).innerText,
-                        url: resultList[i].querySelector(selectors.url).getAttribute('href')
+                        price: resultList[i].querySelector(selectors.price) &&
+                            resultList[i].querySelector(selectors.price).innerText.replace(/[^0-9.-]+/g,"")
                     });
                 }
+            }
 
-                document.querySelector(selectors.parentDataContainer).removeChild(document.querySelector(selectors.dataContainerOpened));
-                return JSON.stringify(results);
-            }, elements, config);
+            return data;
+        }, elements);
 
-            results.push(elementResult);
-            await scraperInstance.page.waitFor(200);
-        }
+        await scraperInstance.page.waitFor(200);
 
         return results;
     }

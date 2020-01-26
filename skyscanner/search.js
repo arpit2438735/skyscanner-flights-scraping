@@ -2,9 +2,8 @@ module.exports = class SkyscannerSearch {
 	async setDatepicker(page, wholeMonth, day, month, year) {
 		if (wholeMonth !== false) {
 			await page.click('[class*="FlightDatepicker"] li:nth-of-type(2) button');
-			let monthNumberSelector = (parseInt(month) + 1) - new Date().getMonth();
-			await page.click('button[class*="Monthselector_monthselector__month"]:nth-of-type(' + monthNumberSelector + ')');
-			console.log(`Selected the ${month} month`);
+			await page.click('button[class*="Monthselector_monthselector__wholeyear"]');
+			console.log(`Selected the ${wholeMonth} month`);
 		} else {
 			var year = year || new Date().getFullYear();
 			var month = month.toString().padStart(2, '0') || new Date().getMonth().toString().padStart(2, '0');
