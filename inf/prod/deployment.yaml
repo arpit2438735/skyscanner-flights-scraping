@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: skyscanner-flights-discovery
+    tier: backend
+    deployedBy: deploy-node-app
+  name: skyscanner-flights-discovery
+spec:
+  minReadySeconds: 5
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: skyscanner-flights-discovery
+      tier: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: skyscanner-flights-discovery
+        tier: backend
+        deployedBy: deploy-node-app
+    spec:
+      containers:
+        - image: 'arpit2438735/skyscanner-flights-discovery:6dbd957-1580095175'
+          imagePullPolicy: Always
+          name: skyscanner-flights-discovery
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 150m
+              memory: 128Mi
+            requests:
+              cpu: 3m
+              memory: 64Mi
+          command:
+            - node
+            - lazy.js
+          envFrom: []
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+
