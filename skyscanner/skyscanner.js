@@ -187,7 +187,7 @@ module.exports = class SkyscannerScraper {
     }
 
     async submitSearch() {        
-        await this.takeScreenshot({ path: 'screen/before-submit.png' });
+        // await this.takeScreenshot({ path: 'screen/before-submit.png' });
         // await this.page.waitFor(1000);
         console.log('Submit login form..');
         await this.page.click(this.config.selectors.common.searchSubmit);

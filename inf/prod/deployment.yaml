@@ -28,7 +28,7 @@ spec:
         deployedBy: deploy-node-app
     spec:
       containers:
-        - image: 'arpit2438735/skyscanner-flights-discovery:1237d72-1580180653'
+        - image: 'arpit2438735/skyscanner-flights-discovery:35697a8'
           imagePullPolicy: Always
           name: skyscanner-flights-discovery
           env:

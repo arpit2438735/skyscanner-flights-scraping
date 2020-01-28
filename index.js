@@ -77,7 +77,7 @@ async function callFlight(arguments) {
 
 		if(await skyscannerScraperInstance.loadResultPage()) {
 			console.log(await skyscannerScraperInstance.page.url());
-			await skyscannerScraperInstance.page.screenshot({ path: 'screen/submitted.png' });
+			//await skyscannerScraperInstance.page.screenshot({ path: 'screen/submitted.png' });
 
 			console.log('Wait for the results..');
 
