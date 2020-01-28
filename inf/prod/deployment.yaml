@@ -28,7 +28,7 @@ spec:
         deployedBy: deploy-node-app
     spec:
       containers:
-        - image: 'arpit2438735/skyscanner-flights-discovery:6dbd957-1580095175'
+        - image: 'arpit2438735/skyscanner-flights-discovery:1237d72-1580180653'
           imagePullPolicy: Always
           name: skyscanner-flights-discovery
           env:
@@ -47,7 +47,7 @@ spec:
               memory: 64Mi
           command:
             - node
-            - lazy.js
+            - index.js
           envFrom: []
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
