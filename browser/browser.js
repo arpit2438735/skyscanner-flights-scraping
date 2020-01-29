@@ -11,7 +11,7 @@ module.exports = class Browser {
     async init() {
         this.browserInstance = await puppeteer.launch({
             headless: this.options.headless,
-            args: ['--no-sandbox'],
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
             ignoreHTTPSErrors: true,
             // args: ['--deterministic-fetch'],
             defaultViewport: {

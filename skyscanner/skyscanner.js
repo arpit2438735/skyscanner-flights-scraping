@@ -5,15 +5,14 @@ const PageFactory = require('./page-parser/page-factory');
 module.exports = class SkyscannerScraper {
     constructor() {
         this.config = {
-            rootPage: 'https://www.skyscanner.com',
+            rootPage: 'https://www.skyscanner.co.in',
             availablePageParser: {
                 destinationList: '.browse-list-category:nth-of-type(1)',
                 noFlightResult: '.day-no-results-cushion',
                 monthResult: '.month-view',
                 flightList: '.day-list-item'
             },
-            selectors: selectors,
-            enableScreenshot: true
+            selectors: selectors
         };
     }
 

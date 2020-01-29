@@ -4,6 +4,34 @@ const utils = require('./utils/utils');
 const Browser = require('./browser/browser');
 const SkyscannerScraper = require('./skyscanner/skyscanner');
 
+async function callback(skyscannerScraperInstance) {
+	await skyscannerScraperInstance.submitSearch();	
+
+		/*
+		// in case of G recaptcha
+		await utils.clickOnRecaptcha(page);
+		*/
+
+	if(await skyscannerScraperInstance.loadResultPage()) {
+		console.log(await skyscannerScraperInstance.page.url());
+		//await skyscannerScraperInstance.page.screenshot({ path: 'screen/submitted.png' });
+
+		console.log('Wait for the results..');
+
+		var pageParser = await skyscannerScraperInstance.createPageParser();
+
+		if(!pageParser || !pageParser.getData) {
+			await skyscannerScraperInstance.page.evaluate(() => {
+					location.reload(true);
+			});
+			await callback(skyscannerScraperInstance);
+		}
+
+	}
+	
+	return await pageParser.getData(skyscannerScraperInstance);
+}
+
 async function callFlight(arguments) {
 	try{
 		const args = utils.getInputParameters(arguments);
@@ -75,21 +103,7 @@ async function callFlight(arguments) {
 		await utils.clickOnRecaptcha(page);
 		*/
 
-		if(await skyscannerScraperInstance.loadResultPage()) {
-			console.log(await skyscannerScraperInstance.page.url());
-			//await skyscannerScraperInstance.page.screenshot({ path: 'screen/submitted.png' });
-
-			console.log('Wait for the results..');
-
-			var pageParser = await skyscannerScraperInstance.createPageParser();
-
-			if(!pageParser && !pageParser.getData) {
-				await skyscannerScraperInstance.page.reload(await skyscannerScraperInstance.page.url());
-				pageParser = await skyscannerScraperInstance.createPageParser();
-			}
-			var results = await pageParser.getData(skyscannerScraperInstance);
-			return results;
-		}
+		return callback(skyscannerScraperInstance);
 
 		console.log('Window close');
 		await browser.close();
