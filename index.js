@@ -53,60 +53,27 @@ async function callFlight(arguments) {
 			ua: args['ua'], 
 			'intercept-request': true
 		});
-		
-		console.log(chalk.bgCyan('Faking user interaction..'));
-		await utils.fakingUserInteraction(skyscannerScraperInstance.page);
 
-		if (args['username'] !== undefined && args['password'] !== undefined) {
-			await skyscannerScraperInstance.signIn(args['username'], args['password']);
-		}
+		const element = await skyscannerScraperInstance.page.$("pre");
+		const response = await (await element.getProperty('textContent')).jsonValue();
+		const data = [];
 
-		// await skyscannerScraperInstance.page.click('#fsc-trip-type-selector-return'); // enabled by default
+		JSON.parse(response).PlacePrices.forEach((place) => {
+			let price = place.IndirectPrice;
 
-		console.log(chalk.yellow("Is oneWay: " + chalk.underline.bold(args['oneWay'])));
-		if (args['oneWay'] === true)
-			await skyscannerScraperInstance.setOneWay();
+			if(place.DirectPrice && place.DirectPrice > price) {
+				price = place.DirectPrice;
+			}
 
-		console.log(chalk.yellow("Is directOnly: " + chalk.underline.bold(args['directOnly'])));
-		if (args['directOnly'] === true)
-			await skyscannerScraperInstance.setDirectOnly();
-
-		await skyscannerScraperInstance.setOriginAirport(args['origin']);
-
-		if (args['destination'] != 'Everywhere') {
-			await skyscannerScraperInstance.setDestinationAirport(args['destination']);
-		}
-
-		await skyscannerScraperInstance.setDepartureDate(
-			args['wholeMonthStart'],
-			args['dayStart'],
-			args['monthStart'],
-			args['yearStart']
-		);
-
-		if (args['oneWay'] !== true) {
-			await skyscannerScraperInstance.setReturnDate(
-				args['wholeMonthEnd'],
-				args['dayEnd'],
-				args['monthEnd'],
-				args['yearEnd']
-			);
-		}
-
-		if(args['adults'] !== undefined || args['children'] !== undefined)
-			await skyscannerScraperInstance.setPassengersData(args['adults'], args['children']);
-
-		await skyscannerScraperInstance.submitSearch();	
-
-		/*
-		// in case of G recaptcha
-		await utils.clickOnRecaptcha(page);
-		*/
-
-		return callback(skyscannerScraperInstance);
-
+			data.push({
+				destination: place.Name,
+				price
+			})
+		});
 		console.log('Window close');
+		console.log(data);
 		await browser.close();
+		return data;
 	} catch(e) {
 		console.error('Something went wrong');
 		console.log(e);

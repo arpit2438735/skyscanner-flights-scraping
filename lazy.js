@@ -14,7 +14,9 @@ const countryList = [
     'finland',
     'south africa',
     'new zealand',
-    'poland'
+    'poland',
+    'iceland',
+    'united kingdom'
 ];
 
 const budget = [
@@ -25,8 +27,9 @@ const budget = [
    30000,
    25000,
    30000,
+   30000,
+   30000,
    30000
-
 ];
 
 (async () => {

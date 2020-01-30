@@ -5,7 +5,7 @@ const PageFactory = require('./page-parser/page-factory');
 module.exports = class SkyscannerScraper {
     constructor() {
         this.config = {
-            rootPage: 'https://www.skyscanner.co.in',
+            rootPage: 'https://www.skyscanner.net/g/browseservice/dataservices/browse/v3/bvweb/UK/INR/en-GB/destinations/IN/anywhere/anytime/anytime/?profile=minimalcityrollupwithnamesv2&include=image;holiday;hotel;adverts&apikey=8aa374f4e28e4664bf268f850f767535&isMobilePhone=false',
             availablePageParser: {
                 destinationList: '.browse-list-category:nth-of-type(1)',
                 noFlightResult: '.day-no-results-cushion',
