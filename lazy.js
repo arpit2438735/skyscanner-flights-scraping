@@ -66,7 +66,7 @@ const budget = [
 
                 if(cache.get(list.destination)) {
                     let inCache = cache.get(list.destination);
-                    if(inCache > price) {
+                    if(price && inCache > price) {
                         getReady.push({
                             destination: list.destination,
                             price
