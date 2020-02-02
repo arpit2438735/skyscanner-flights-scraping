@@ -16,7 +16,9 @@ const countryList = [
     'new zealand',
     'poland',
     'iceland',
-    'united kingdom'
+    'united kingdom',
+    'germany',
+    'norway'
 ];
 
 const budget = [
@@ -26,6 +28,8 @@ const budget = [
    20000,
    30000,
    25000,
+   30000,
+   30000,
    30000,
    30000,
    30000,
